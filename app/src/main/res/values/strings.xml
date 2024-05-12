@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">codeforces-project</string>
+    <string name="addGroupBtnContentDescription">Add group</string>
 </resources>
