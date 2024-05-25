@@ -15,6 +15,7 @@
         <activity
             android:name=".Activity.AddGroup"
             android:label="Add group"
+            android:parentActivityName=".Activity.MainActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.MainActivity"
