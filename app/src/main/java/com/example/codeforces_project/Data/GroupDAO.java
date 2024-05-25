@@ -13,8 +13,8 @@ import java.util.List;
 public class GroupDAO {
     private final SQLiteDatabase db;
 
-    public GroupDAO(SQLiteDatabase db) {
-        this.db = db;
+    public GroupDAO(DatabaseHelper databaseHelper) {
+        db = databaseHelper.getReadableDatabase();
     }
 
     // Добавление группы
