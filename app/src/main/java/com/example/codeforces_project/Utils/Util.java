@@ -6,6 +6,6 @@ public class Util {
     public static final String DATABASE_NAME = "codeforcesDB";
     public static final String GROUP_TABLE_NAME = "codeforcesGroup";
     public static final String GROUP_KEY_ID = "id";
-    public static final String GROUP_NAME = "name";
+    public static final String GROUP_NAME = "codeforcesGroup";
 
 }
