@@ -25,8 +25,8 @@ public class GroupDAO {
     }
 
     // Получение всех групп
-    public List<Group> getAllGroups() {
-        List<Group> groups = new ArrayList<>();
+    public ArrayList<Group> getAllGroups() {
+        ArrayList<Group> groups = new ArrayList<>();
         String selectQuery =  "SELECT * FROM \"" + Util.GROUP_TABLE_NAME + "\"";
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
