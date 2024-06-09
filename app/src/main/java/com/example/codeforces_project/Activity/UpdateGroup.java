@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -25,6 +26,8 @@ public class UpdateGroup extends AppCompatActivity {
     String groupName;
     int groupId;
 
+    ActionBar ab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,10 @@ public class UpdateGroup extends AppCompatActivity {
 
         getAndSetIntentData();
 
+        ab = getSupportActionBar();
+        setActionBarTitle();
+
+
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,10 +59,16 @@ public class UpdateGroup extends AppCompatActivity {
                 if (result == -1) {
                     Toast.makeText(UpdateGroup.this, "Failed to update", Toast.LENGTH_SHORT).show();
                 } else {
+                    updateGroupData(group);
+                    setActionBarTitle();
                     Toast.makeText(UpdateGroup.this, "Updated Successfully!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    void updateGroupData(Group group) {
+        groupName = group.getName();
     }
 
     void getAndSetIntentData() {
@@ -72,5 +85,9 @@ public class UpdateGroup extends AppCompatActivity {
         }
     }
 
-
+    void setActionBarTitle() {
+        if (ab != null) {
+            ab.setTitle(groupName);
+        }
+    }
 }
