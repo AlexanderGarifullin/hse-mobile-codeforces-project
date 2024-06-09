@@ -1,5 +1,6 @@
 package com.example.codeforces_project.Activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,7 +23,7 @@ import com.example.codeforces_project.R;
 public class UpdateGroup extends AppCompatActivity {
 
     EditText groupNameEdit;
-    Button btnUpdate;
+    Button btnUpdate, btnDeleteGroup;
 
     String groupName;
     int groupId;
@@ -41,6 +43,7 @@ public class UpdateGroup extends AppCompatActivity {
 
         groupNameEdit = findViewById(R.id.groupNameInputUpdate);
         btnUpdate = findViewById(R.id.update_group_btn);
+        btnDeleteGroup = findViewById(R.id.delete_button);
 
         getAndSetIntentData();
 
@@ -63,6 +66,13 @@ public class UpdateGroup extends AppCompatActivity {
                     setActionBarTitle();
                     Toast.makeText(UpdateGroup.this, "Updated Successfully!", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        btnDeleteGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDialog();
             }
         });
     }
@@ -89,5 +99,31 @@ public class UpdateGroup extends AppCompatActivity {
         if (ab != null) {
             ab.setTitle(groupName);
         }
+    }
+
+    void confirmDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete " + groupName + " ?");
+        builder.setMessage("Are you sure you want to delete " + groupName + " ?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                GroupDAO groupDAO = new GroupDAO(new DatabaseHelper(UpdateGroup.this));
+                long result = groupDAO.deleteGroup(groupId);
+                if (result == -1) {
+                    Toast.makeText(UpdateGroup.this, "Failed to delete", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(UpdateGroup.this, "Deleted Successfully!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.create().show();
     }
 }
