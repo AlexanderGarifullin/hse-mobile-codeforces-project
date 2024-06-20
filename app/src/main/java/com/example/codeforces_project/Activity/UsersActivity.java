@@ -4,8 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,41 +17,49 @@ import com.example.codeforces_project.Data.DatabaseHelper;
 import com.example.codeforces_project.Data.GroupDAO;
 import com.example.codeforces_project.Data.UserDao;
 import com.example.codeforces_project.Model.Group;
+import com.example.codeforces_project.Model.User;
 import com.example.codeforces_project.R;
 import com.example.codeforces_project.Utils.CustomAdapter;
+import com.example.codeforces_project.Utils.UserCustomAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class UsersActivity extends AppCompatActivity {
 
-    RecyclerView recyclerViewGroups;
-    FloatingActionButton addBtnGroups;
+    RecyclerView recyclerViewUsers;
+    FloatingActionButton addBtnUsers;
 
-    ArrayList<Group> groups;
-    CustomAdapter customAdapter;
+    ArrayList<User> users;
+    UserCustomAdapter customAdapter;
+
+    int groupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_users);
 
-        recyclerViewGroups = findViewById(R.id.recyclerViewGroups);
-        addBtnGroups = findViewById(R.id.addGroupBtn);
-        addBtnGroups.setOnClickListener(new View.OnClickListener() {
+        groupId = getIntent().getIntExtra("groupId", -1);
+
+        recyclerViewUsers = findViewById(R.id.recyclerViewUsers);
+        addBtnUsers = findViewById(R.id.addUserBtn);
+
+        addBtnUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddGroup.class);
+                Intent intent = new Intent(UsersActivity.this, AddUser.class);
+                intent.putExtra("groupId", groupId);
                 startActivity(intent);
             }
         });
 
         storeData();
 
-        customAdapter = new CustomAdapter(MainActivity.this, this, groups);
-        recyclerViewGroups.setAdapter(customAdapter);
-        recyclerViewGroups.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        customAdapter = new UserCustomAdapter(UsersActivity.this, this, users);
+        recyclerViewUsers.setAdapter(customAdapter);
+        recyclerViewUsers.setLayoutManager(new LinearLayoutManager(UsersActivity.this));
     }
 
     @Override
@@ -59,14 +71,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void storeData() {
-        GroupDAO groupDAO = new GroupDAO(new DatabaseHelper(MainActivity.this));
-        groups = groupDAO.getAllGroups();
+        UserDao userDao = new UserDao(new DatabaseHelper(UsersActivity.this));
+        users = userDao.getAllUsers(groupId);
     }
 
     public void updateData() {
-        GroupDAO groupDAO = new GroupDAO(new DatabaseHelper(MainActivity.this));
-        groups = groupDAO.getAllGroups();
-        customAdapter.setGroups(groups);
+        UserDao userDao = new UserDao(new DatabaseHelper(UsersActivity.this));
+        users = userDao.getAllUsers(groupId);
+        customAdapter.setUsers(users);
         customAdapter.notifyDataSetChanged();
     }
 

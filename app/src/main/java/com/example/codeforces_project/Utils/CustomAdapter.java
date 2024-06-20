@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.codeforces_project.Activity.UpdateGroup;
 import com.example.codeforces_project.Model.Group;
+import com.example.codeforces_project.Model.User;
 import com.example.codeforces_project.R;
 
 import java.util.ArrayList;
@@ -41,7 +42,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull CustomAdapter.MyViewHolder holder, int position) {
-        holder.groupIdTxt.setText(String.valueOf(groups.get(position).getId()));
         holder.groupNameTxt.setText(String.valueOf(groups.get(position).getName()));
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,13 +61,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView groupIdTxt, groupNameTxt;
+        TextView groupNameTxt;
         LinearLayout mainLayout;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            groupIdTxt = itemView.findViewById(R.id.groupIdTxt);
             groupNameTxt = itemView.findViewById(R.id.groupNameTxt);
             mainLayout = itemView.findViewById(R.id.mainLayout);
         }
+    }
+
+    public void setGroups(ArrayList<Group> groups) {
+        this.groups = groups;
     }
 }

@@ -8,7 +8,6 @@ import com.example.codeforces_project.Model.Group;
 import com.example.codeforces_project.Utils.Util;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GroupDAO {
     private final SQLiteDatabase db;
@@ -20,7 +19,7 @@ public class GroupDAO {
     // Добавление группы
     public long addGroup(String name) {
         ContentValues values = new ContentValues();
-        values.put(Util.GROUP_TABLE_NAME, name);
+        values.put(Util.GROUP_NAME, name);
         return db.insert(Util.GROUP_TABLE_NAME, null, values);
     }
 
@@ -32,7 +31,7 @@ public class GroupDAO {
         if (cursor.moveToFirst()) {
             do {
                 Group group = new Group();
-                int idIndex = cursor.getColumnIndex(Util.GROUP_KEY_ID);
+                int idIndex = cursor.getColumnIndex(Util.ID);
                 if (idIndex != -1) {
                     group.setId(cursor.getInt(idIndex));
                 }
@@ -53,13 +52,13 @@ public class GroupDAO {
         ContentValues values = new ContentValues();
         values.put(Util.GROUP_NAME, group.getName());
 
-        return db.update(Util.GROUP_TABLE_NAME, values, Util.GROUP_KEY_ID + " = ?",
+        return db.update(Util.GROUP_TABLE_NAME, values, Util.ID + " = ?",
                 new String[]{String.valueOf(group.getId())});
     }
 
     // Удаление группы
     public int deleteGroup(int groupId) {
-        return db.delete(Util.GROUP_TABLE_NAME, Util.GROUP_KEY_ID + " = ?",
+        return db.delete(Util.GROUP_TABLE_NAME, Util.ID + " = ?",
                 new String[]{String.valueOf(groupId)});
     }
 }

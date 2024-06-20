@@ -1,6 +1,7 @@
 package com.example.codeforces_project.Activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +24,7 @@ import com.example.codeforces_project.R;
 public class UpdateGroup extends AppCompatActivity {
 
     EditText groupNameEdit;
-    Button btnUpdate, btnDeleteGroup;
+    Button btnUpdate, btnDeleteGroup, btnUsers;
 
     String groupName;
     int groupId;
@@ -44,12 +45,21 @@ public class UpdateGroup extends AppCompatActivity {
         groupNameEdit = findViewById(R.id.groupNameInputUpdate);
         btnUpdate = findViewById(R.id.update_group_btn);
         btnDeleteGroup = findViewById(R.id.delete_button);
+        btnUsers = findViewById(R.id.user_btn);
 
         getAndSetIntentData();
 
         ab = getSupportActionBar();
         setActionBarTitle();
 
+        btnUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UpdateGroup.this, UsersActivity.class);
+                intent.putExtra("groupId", groupId);
+                startActivity(intent);
+            }
+        });
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override

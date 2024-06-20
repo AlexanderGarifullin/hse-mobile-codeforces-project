@@ -19,15 +19,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        String createGroupTableQuery  = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "%s TEXT NOT NULL UNIQUE);",
-                Util.GROUP_TABLE_NAME, Util.GROUP_KEY_ID, Util.GROUP_TABLE_NAME);
-        db.execSQL(query);
+                Util.GROUP_TABLE_NAME, Util.ID, Util.GROUP_TABLE_NAME);
+
+        String createUserTableQuery = String.format(
+                "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s INTEGER, " +
+                        "%s INTEGER, %s INTEGER, FOREIGN KEY(%s) REFERENCES %s(%s) ON DELETE CASCADE);",
+                Util.USER_TABLE_NAME, Util.ID, Util.USER_NAME, Util.GROUP_ID,
+                Util.USER_RATING, Util.USER_MAX_RATING, Util.GROUP_ID, Util.GROUP_TABLE_NAME, Util.ID);
+
+        db.execSQL(createGroupTableQuery);
+        db.execSQL(createUserTableQuery);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(String.format("DROP TABLE IF EXISTS %s", Util.GROUP_TABLE_NAME));
+        db.execSQL(String.format("DROP TABLE IF EXISTS %s", Util.USER_TABLE_NAME));
         onCreate(db);
     }
 }

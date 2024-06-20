@@ -6,4 +6,14 @@
     <color name="colorPrimaryDark">#4d2c91</color>
     <color name="colorAccent">#b085f5</color>
     <color name="red">#E94252</color>
+
+
+    <color name="newbie">#808080</color>
+    <color name="pupil">#008000</color>
+    <color name="specialist">#03A89E</color>
+    <color name="expert">#0000FF</color>
+    <color name="candidateMaster">#AA00AA</color>
+    <color name="master">#FF8C00</color>
+    <color name="grandmaster">#FF0000</color>
+
 </resources>
