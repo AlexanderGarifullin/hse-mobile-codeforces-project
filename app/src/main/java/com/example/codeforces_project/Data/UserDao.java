@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.codeforces_project.Model.Group;
 import com.example.codeforces_project.Model.User;
 import com.example.codeforces_project.Utils.Util;
 
@@ -17,7 +16,6 @@ public class UserDao {
         db = databaseHelper.getReadableDatabase();
     }
 
-    // Добавление пользователя
     public long addUser(String name, int groupId, int rating, int maxRating) {
         ContentValues values = new ContentValues();
         values.put(Util.USER_NAME, name);
@@ -27,10 +25,14 @@ public class UserDao {
         return db.insert(Util.USER_TABLE_NAME, null, values);
     }
 
-    // Получение всех пользователей
     public ArrayList<User> getAllUsers(int groupId) {
         ArrayList<User> users = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + Util.USER_TABLE_NAME + " WHERE " + Util.GROUP_ID + " = ?";
+
+        String orderBy = Util.USER_RATING + " DESC";
+
+        String selectQuery = String.format("SELECT * FROM %s WHERE %s = ? ORDER BY %s",
+                Util.USER_TABLE_NAME, Util.GROUP_ID, orderBy);
+
         Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(groupId)});
 
         if (cursor.moveToFirst()) {
@@ -68,7 +70,6 @@ public class UserDao {
         return users;
     }
 
-    // Обновление пользователя
     public int updateUser(User user) {
         ContentValues values = new ContentValues();
         values.put(Util.USER_NAME, user.getName());
@@ -79,10 +80,22 @@ public class UserDao {
                 new String[]{String.valueOf(user.getId())});
     }
 
-    // Удаление пользователя
     public int deleteUser(int userId) {
         return db.delete(Util.USER_TABLE_NAME, Util.ID + " = ?",
                 new String[]{String.valueOf(userId)});
     }
 
+    public boolean doesUserExist(String handle, int groupId) {
+        String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE %s = ? AND %s = ?",
+                Util.USER_TABLE_NAME, Util.USER_NAME, Util.GROUP_ID);
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{handle, String.valueOf(groupId)});
+
+        int count = 0;
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+
+        cursor.close();
+        return count > 0;
+    }
 }

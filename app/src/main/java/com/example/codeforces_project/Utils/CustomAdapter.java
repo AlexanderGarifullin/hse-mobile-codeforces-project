@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.codeforces_project.Activity.UpdateGroup;
 import com.example.codeforces_project.Model.Group;
-import com.example.codeforces_project.Model.User;
 import com.example.codeforces_project.R;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     public CustomAdapter(Activity activity, Context context, ArrayList groups) {
         this.activity = activity;
-        this.context  = context;
+        this.context = context;
         this.groups = groups;
     }
 
@@ -47,8 +46,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, UpdateGroup.class);
-                intent.putExtra("groupId", groups.get(position).getId());
-                intent.putExtra("groupName", String.valueOf(groups.get(position).getName()));
+                String groupId = context.getResources().getString(R.string.intentExtraGroupId);
+                String groupName = context.getResources().getString(R.string.intentExtraGroupName);
+
+                intent.putExtra(groupId, groups.get(position).getId());
+                intent.putExtra(groupName, String.valueOf(groups.get(position).getName()));
                 activity.startActivityForResult(intent, 1);
             }
         });

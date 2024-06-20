@@ -56,7 +56,7 @@ public class UpdateGroup extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UpdateGroup.this, UsersActivity.class);
-                intent.putExtra("groupId", groupId);
+                intent.putExtra(getString(R.string.intentExtraGroupId), groupId);
                 startActivity(intent);
             }
         });
@@ -70,11 +70,11 @@ public class UpdateGroup extends AppCompatActivity {
                 Group group = new Group(grId, groupName);
                 long result = groupDAO.updateGroup(group);
                 if (result == -1) {
-                    Toast.makeText(UpdateGroup.this, "Failed to update", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateGroup.this, getString(R.string.failedToUpdate), Toast.LENGTH_SHORT).show();
                 } else {
                     updateGroupData(group);
                     setActionBarTitle();
-                    Toast.makeText(UpdateGroup.this, "Updated Successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateGroup.this, getString(R.string.updatedSuccessfully), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -92,16 +92,17 @@ public class UpdateGroup extends AppCompatActivity {
     }
 
     void getAndSetIntentData() {
-        if(getIntent().hasExtra("groupId") && getIntent().hasExtra("groupName")){
+        if(getIntent().hasExtra(getString(R.string.intentExtraGroupId))
+                && getIntent().hasExtra(getString(R.string.intentExtraGroupName))){
             //Getting Data from Intent
-            groupId = getIntent().getIntExtra("groupId", -1);
-            groupName = getIntent().getStringExtra("groupName");
+            groupId = getIntent().getIntExtra(getString(R.string.intentExtraGroupId), -1);
+            groupName = getIntent().getStringExtra(getString(R.string.intentExtraGroupName));
 
             //Setting Intent Data
             groupNameEdit.setText(groupName);
 
         }else{
-            Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.noData), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -113,22 +114,24 @@ public class UpdateGroup extends AppCompatActivity {
 
     void confirmDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Delete " + groupName + " ?");
-        builder.setMessage("Are you sure you want to delete " + groupName + " ?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setTitle(String.format(getString(R.string.askToDelete), groupName));
+
+        builder.setMessage(String.format(getString(R.string.askToSureDelete), groupName));
+
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 GroupDAO groupDAO = new GroupDAO(new DatabaseHelper(UpdateGroup.this));
                 long result = groupDAO.deleteGroup(groupId);
                 if (result == -1) {
-                    Toast.makeText(UpdateGroup.this, "Failed to delete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateGroup.this, getString(R.string.failedToDelete), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(UpdateGroup.this, "Deleted Successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateGroup.this, getString(R.string.deleteSuccessfully), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 

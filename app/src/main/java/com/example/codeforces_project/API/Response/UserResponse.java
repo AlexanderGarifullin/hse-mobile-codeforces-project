@@ -1,7 +1,5 @@
 package com.example.codeforces_project.API.Response;
 
-
-
 import com.example.codeforces_project.API.ModelResponse.UserAPI;
 
 import java.util.List;

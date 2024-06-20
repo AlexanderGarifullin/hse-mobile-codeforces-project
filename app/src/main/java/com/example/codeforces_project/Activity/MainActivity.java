@@ -11,14 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.codeforces_project.Data.DatabaseHelper;
 import com.example.codeforces_project.Data.GroupDAO;
-import com.example.codeforces_project.Data.UserDao;
 import com.example.codeforces_project.Model.Group;
 import com.example.codeforces_project.R;
 import com.example.codeforces_project.Utils.CustomAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 

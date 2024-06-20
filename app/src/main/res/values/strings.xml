@@ -2,4 +2,44 @@
     <string name="app_name">codeforces-project</string>
     <string name="addGroupBtnContentDescription">Add group</string>
     <string name="addUserBtnContentDescription">Add user</string>
+
+    <!-- User intent extra data -->
+    <string name="intentExtraUserId">userId</string>
+    <string name="intentExtraUserName">userName</string>
+    <string name="intentExtraUserGroupId">groupId</string>
+    <string name="intentExtraUserRating">rating</string>
+    <string name="intentExtraUserMaxRating">maxRating</string>
+
+    <!-- Group intent extra data -->
+    <string name="intentExtraGroupId">groupId</string>
+    <string name="intentExtraGroupName">groupName</string>
+
+
+    <!-- Operations messages -->
+    <string name="failedToAdd">Failed to add!</string>
+    <string name="failedToUpdate">Failed to update!</string>
+    <string name="failedToDelete">Failed to delete!</string>
+
+    <string name="noSuchUser">There is no such user!</string>
+    <string name="alreadySuchUser">There is already such a user!</string>
+
+    <string name="addedSuccessfully">Added Successfully!</string>
+    <string name="updatedSuccessfully">"Updated Successfully!</string>
+    <string name="deleteSuccessfully">Deleted Successfully!</string>
+
+    <string name="askToDelete">Delete %s ?</string>
+    <string name="askToSureDelete">Are you sure you want to delete %s ?</string>
+
+    <string name="noData">No data!</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <!-- Activities messages-->
+    <string name="groupAddNameEditTextHint">Group name</string>
+    <string name="groupAddUserNameEditTextHint">User name</string>
+    <string name="addOnBtn">Add</string>
+    <string name="updateOnBtn">Update</string>
+    <string name="deleteOnBtn">Delete</string>
+    <string name="usersOnBtn">Users</string>
 </resources>

@@ -15,33 +15,42 @@
         tools:targetApi="31">
         <activity
             android:name=".Activity.UpdateUser"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Activity.AddUser"
             android:exported="false"
-            android:label="Add user" />
+            android:label="Add user"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Activity.UsersActivity"
             android:exported="false"
-            android:label="Users" />
+            android:label="Users"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Activity.UpdateGroup"
             android:exported="false"
-            android:label="Update group" />
+            android:label="Update group"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Activity.AddGroup"
             android:exported="false"
-            android:label="Add group" />
+            android:label="Add group"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Activity.MainActivity"
             android:exported="true"
-            android:label="Codeforces groups">
+            android:label="Codeforces groups"
+            tools:ignore="ExtraText">
+            android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 

@@ -11,16 +11,15 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.example.codeforces_project.API.CodeforcesApiService;
+import com.example.codeforces_project.API.ModelResponse.UserAPI;
 import com.example.codeforces_project.Data.DatabaseHelper;
-import com.example.codeforces_project.Data.GroupDAO;
 import com.example.codeforces_project.Data.UserDao;
-import com.example.codeforces_project.Model.Group;
 import com.example.codeforces_project.Model.User;
 import com.example.codeforces_project.R;
+
+import java.util.List;
 
 public class UpdateUser extends AppCompatActivity {
 
@@ -50,17 +49,36 @@ public class UpdateUser extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserDao userDao = new UserDao(new DatabaseHelper(UpdateUser.this));
-                String userName = userNameEdit.getText().toString().trim();
-                User user = new User(userId, groupId, rating, maxRating, userName);
-                long result = userDao.updateUser(user);
-                if (result == -1) {
-                    Toast.makeText(UpdateUser.this, "Failed to update", Toast.LENGTH_SHORT).show();
-                } else {
-                    updateUserData(user);
-                    setActionBarTitle();
-                    Toast.makeText(UpdateUser.this, "Updated Successfully!", Toast.LENGTH_SHORT).show();
-                }
+                String handle = userNameEdit.getText().toString().trim();
+
+                CodeforcesApiService apiService = new CodeforcesApiService();
+
+                apiService.getUserInfo(handle, new CodeforcesApiService.OnUserResponseListener() {
+                    @Override
+                    public void onUserResponse(List<UserAPI> users) {
+                        if (users.isEmpty()) {
+                            Toast.makeText(UpdateUser.this, getString(R.string.noSuchUser), Toast.LENGTH_SHORT).show();
+                        } else {
+
+                            UserDao userDao = new UserDao(new DatabaseHelper(UpdateUser.this));
+                            UserAPI curUser = users.get(0);
+
+                            if (userDao.doesUserExist(curUser.getHandle(), groupId)) {
+                                Toast.makeText(UpdateUser.this, getString(R.string.alreadySuchUser), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            User user = new User(userId, groupId, curUser.getRating(), curUser.getMaxRating(), curUser.getHandle());
+                            long result = userDao.updateUser(user);
+
+                            if (result == -1) {
+                                Toast.makeText(UpdateUser.this, getString(R.string.failedToUpdate), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(UpdateUser.this,  getString(R.string.updatedSuccessfully), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
             }
         });
 
@@ -77,20 +95,21 @@ public class UpdateUser extends AppCompatActivity {
     }
 
     void getAndSetIntentData() {
-        if(getIntent().hasExtra("userId") && getIntent().hasExtra("userName")
-                && getIntent().hasExtra("groupId") && getIntent().hasExtra("rating")
-                && getIntent().hasExtra("maxRating")){
+        if(getIntent().hasExtra(getString(R.string.intentExtraUserId))
+                && getIntent().hasExtra(getString(R.string.intentExtraUserName))
+                && getIntent().hasExtra(getString(R.string.intentExtraGroupId))
+                && getIntent().hasExtra(getString(R.string.intentExtraUserRating))
+                && getIntent().hasExtra(getString(R.string.intentExtraUserMaxRating))) {
             //Getting Data from Intent
-            userId = getIntent().getIntExtra("userId", -1);
-            userName = getIntent().getStringExtra("userName");
-            groupId = getIntent().getIntExtra("groupId", -1);
-            rating = getIntent().getIntExtra("rating", -1);
-            maxRating = getIntent().getIntExtra("maxRating",- 1);
+            userId = getIntent().getIntExtra(getString(R.string.intentExtraUserId), -1);
+            userName = getIntent().getStringExtra(getString(R.string.intentExtraUserName));
+            groupId = getIntent().getIntExtra(getString(R.string.intentExtraGroupId), -1);
+            rating = getIntent().getIntExtra(getString(R.string.intentExtraUserRating), -1);
+            maxRating = getIntent().getIntExtra(getString(R.string.intentExtraUserMaxRating),- 1);
             //Setting Intent Data
             userNameEdit.setText(userName);
-
-        }else{
-            Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();
+        } else{
+            Toast.makeText(this, getString(R.string.noData), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -102,22 +121,24 @@ public class UpdateUser extends AppCompatActivity {
 
     void confirmDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Delete " + userName + " ?");
-        builder.setMessage("Are you sure you want to delete " + userName + " ?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+        builder.setTitle(String.format(getString(R.string.askToDelete), userName));
+        builder.setMessage(String.format(getString(R.string.askToSureDelete), userName));
+
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 UserDao userDao = new UserDao(new DatabaseHelper(UpdateUser.this));
                 long result = userDao.deleteUser(userId);
                 if (result == -1) {
-                    Toast.makeText(UpdateUser.this, "Failed to delete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateUser.this,  getString(R.string.failedToDelete), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(UpdateUser.this, "Deleted Successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateUser.this, getString(R.string.deleteSuccessfully), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 

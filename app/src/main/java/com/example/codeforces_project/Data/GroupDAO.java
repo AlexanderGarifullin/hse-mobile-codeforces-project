@@ -16,14 +16,12 @@ public class GroupDAO {
         db = databaseHelper.getReadableDatabase();
     }
 
-    // Добавление группы
     public long addGroup(String name) {
         ContentValues values = new ContentValues();
         values.put(Util.GROUP_NAME, name);
         return db.insert(Util.GROUP_TABLE_NAME, null, values);
     }
 
-    // Получение всех групп
     public ArrayList<Group> getAllGroups() {
         ArrayList<Group> groups = new ArrayList<>();
         String selectQuery =  "SELECT * FROM \"" + Util.GROUP_TABLE_NAME + "\"";
@@ -47,7 +45,6 @@ public class GroupDAO {
         return groups;
     }
 
-    // Обновление группы
     public int updateGroup(Group group) {
         ContentValues values = new ContentValues();
         values.put(Util.GROUP_NAME, group.getName());
@@ -56,7 +53,6 @@ public class GroupDAO {
                 new String[]{String.valueOf(group.getId())});
     }
 
-    // Удаление группы
     public int deleteGroup(int groupId) {
         return db.delete(Util.GROUP_TABLE_NAME, Util.ID + " = ?",
                 new String[]{String.valueOf(groupId)});

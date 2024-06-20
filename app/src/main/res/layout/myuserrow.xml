@@ -19,7 +19,6 @@
             android:padding="12dp">
 
 
-
             <TextView
                 android:id="@+id/UserNameTxt"
                 android:layout_width="wrap_content"
@@ -31,8 +30,7 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteY="16dp" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/UserRatingTxt"
@@ -42,8 +40,7 @@
                 android:textColor="#000"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/userDelimeter"
-                tools:layout_editor_absoluteY="13dp" />
+                app:layout_constraintEnd_toStartOf="@+id/userDelimeter" />
 
             <TextView
                 android:id="@+id/userDelimeter"
@@ -53,8 +50,7 @@
                 android:textColor="#000"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/UserMaxRatingTxt"
-                tools:layout_editor_absoluteY="12dp" />
+                app:layout_constraintEnd_toStartOf="@+id/UserMaxRatingTxt" />
 
             <TextView
                 android:id="@+id/UserMaxRatingTxt"
@@ -65,8 +61,7 @@
                 android:textColor="#000"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="13dp" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

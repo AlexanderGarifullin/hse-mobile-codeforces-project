@@ -16,9 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.codeforces_project.Activity.UpdateGroup;
 import com.example.codeforces_project.Activity.UpdateUser;
-import com.example.codeforces_project.Model.Group;
 import com.example.codeforces_project.Model.User;
 import com.example.codeforces_project.R;
 
@@ -26,6 +24,14 @@ import java.util.ArrayList;
 
 public class UserCustomAdapter extends RecyclerView.Adapter<UserCustomAdapter.MyUserViewHolder>{
 
+    private static final int RATING_LGM_GRANDMASTER = 3000;
+    private static final int RATING_GRANDMASTER = 2400;
+    private static final int RATING_MASTER = 2200;
+    private static final int RATING_CANDIDATE_MASTER = 1900;
+    private static final int RATING_EXPERT = 1600;
+    private static final int RATING_SPECIALIST = 1400;
+    private static final int RATING_PUPIL = 1200;
+    private static final int RATING_NEWBIE = 0;
     private Context context;
     private ArrayList<User> users;
 
@@ -57,11 +63,17 @@ public class UserCustomAdapter extends RecyclerView.Adapter<UserCustomAdapter.My
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, UpdateUser.class);
-                intent.putExtra("userId", users.get(position).getId());
-                intent.putExtra("userName", String.valueOf(users.get(position).getName()));
-                intent.putExtra("groupId", users.get(position).getGroupId());
-                intent.putExtra("rating", users.get(position).getRating());
-                intent.putExtra("maxRating", users.get(position).getMaxRating());
+                String userId = context.getResources().getString(R.string.intentExtraUserId);
+                String userName = context.getResources().getString(R.string.intentExtraUserName);
+                String groupId = context.getResources().getString(R.string.intentExtraUserGroupId);
+                String rating = context.getResources().getString(R.string.intentExtraUserRating);
+                String maxRating = context.getResources().getString(R.string.intentExtraUserMaxRating);
+
+                intent.putExtra(userId, users.get(position).getId());
+                intent.putExtra(userName, String.valueOf(users.get(position).getName()));
+                intent.putExtra(groupId, users.get(position).getGroupId());
+                intent.putExtra(rating, users.get(position).getRating());
+                intent.putExtra(maxRating, users.get(position).getMaxRating());
                 activity.startActivityForResult(intent, 1);
             }
         });
@@ -69,34 +81,34 @@ public class UserCustomAdapter extends RecyclerView.Adapter<UserCustomAdapter.My
 
     private void setHolderColors(@NonNull UserCustomAdapter.MyUserViewHolder holder, int curRating,
                             int maxRating) {
-        if (maxRating >= 3000) {
+        if (maxRating >= RATING_LGM_GRANDMASTER) {
             setGrandMasterColor(holder.userMaxRatingTxt);
         } else {
             holder.userMaxRatingTxt.setTextColor(getColor(maxRating));
         }
-        if (curRating >= 3000) {
+        if (curRating >= RATING_LGM_GRANDMASTER) {
             setGrandMasterColor(holder.userNameTxt);
             setGrandMasterColor(holder.userRatingTxt);
         } else {
             holder.userNameTxt.setTextColor(getColor(curRating));
-            holder.userMaxRatingTxt.setTextColor(getColor(curRating));
+            holder.userRatingTxt.setTextColor(getColor(curRating));
         }
     }
 
     private int getColor(int rating) {
-        if (rating >= 2400) {
+        if (rating >= RATING_GRANDMASTER) {
             return context.getResources().getColor(R.color.grandmaster);
-        } else if (rating >= 2200) {
+        } else if (rating >= RATING_MASTER) {
             return context.getResources().getColor(R.color.master);
-        } else if (rating >= 1900) {
+        } else if (rating >= RATING_CANDIDATE_MASTER) {
             return context.getResources().getColor(R.color.candidateMaster);
-        } else if (rating >= 1600) {
+        } else if (rating >= RATING_EXPERT) {
             return context.getResources().getColor(R.color.expert);
-        } else if (rating >= 1400) {
+        } else if (rating >= RATING_SPECIALIST) {
             return context.getResources().getColor(R.color.specialist);
-        } else if (rating >= 1200) {
-            return context.getResources().getColor(R.color.newbie);
-        } else if (rating >= 0) {
+        } else if (rating >= RATING_PUPIL) {
+            return context.getResources().getColor(R.color.pupil);
+        } else if (rating >= RATING_NEWBIE) {
             return context.getResources().getColor(R.color.newbie);
         }
         return context.getResources().getColor(R.color.black);
