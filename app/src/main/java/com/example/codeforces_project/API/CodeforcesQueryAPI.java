@@ -8,6 +8,7 @@ import com.example.codeforces_project.API.Response.UserResponse;
 import java.util.List;
 
 
+import okhttp3.HttpUrl;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,6 +23,11 @@ public class CodeforcesQueryAPI {
     public void fetchUserInfo(String handle, UserInfoCallback callback) {
 
         CodeforcesAPI api = ApiClient.getClient().create(CodeforcesAPI.class);
+
+        HttpUrl url = api.getUserInfoUrl(handle, true); // Получение URL запроса
+
+        Log.i("api", "Request URL: " + url.toString()); // Вывод URL в Logcat
+
         Call<UserResponse> call = api.getUserInfo(handle, true);
 
         call.enqueue(new Callback<UserResponse>() {
